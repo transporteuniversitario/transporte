@@ -1,0 +1,1 @@
+# Visualização da carteirinha gerada
