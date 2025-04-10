@@ -1,5 +1,4 @@
 import logging
-from app import create_app
 from app.models import Usuario
 from app import create_app
 
