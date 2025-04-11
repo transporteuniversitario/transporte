@@ -18,13 +18,14 @@ def hash_senha(senha):
 import json
 
 def autenticar_usuario(usuario, senha):
-    with open("base_de_dados.json", "r", encoding="utf-8") as f:
+    with open("base_de_dados.json", "r") as f:
         dados = json.load(f)
-        for user in dados["usuarios"]:
-            if user["usuario"] == usuario and user["senha"] == senha:
-                return user["tipo"]
-    return None
 
+    for u in dados["usuarios"]:
+        if u["usuario"] == usuario and u["senha"] == senha:
+            return u["tipo"]
+    return None
+    
 def cadastrar_usuario(nome, email, senha, tipo="aluno"):
     usuarios = carregar_usuarios()
     if email in usuarios["email"].values:
