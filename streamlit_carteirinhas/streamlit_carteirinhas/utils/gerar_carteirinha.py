@@ -1,41 +1,67 @@
-from PIL import Image, ImageDraw, ImageFont
 import os
+import datetime
+from PIL import Image, ImageDraw, ImageFont
+import qrcode
+from io import BytesIO
 
-def gerar_carteirinha(dados, caminho_saida="static/carteirinhas", fundo_path="static/fundos/fundo_padrao.png"):
-    if not os.path.exists(caminho_saida):
-        os.makedirs(caminho_saida)
 
-    imagem_fundo = Image.open(fundo_path).convert("RGBA")
-    draw = ImageDraw.Draw(imagem_fundo)
+# Função para gerar imagem da carteirinha com layout personalizado
+def gerar_carteirinha(carteirinha, diretorio_saida='carteirinhas_geradas'):
+    if not os.path.exists(diretorio_saida):
+        os.makedirs(diretorio_saida)
 
-    fonte = ImageFont.truetype("static/fontes/arial.ttf", 28)
+    largura, altura = 800, 500
+    imagem = Image.new('RGB', (largura, altura), (255, 255, 255))
+    draw = ImageDraw.Draw(imagem)
+    
+    # Carregar fontes (ajuste o caminho conforme seu projeto)
+    try:
+        fonte_titulo = ImageFont.truetype("arialbd.ttf", 28)
+        fonte_texto = ImageFont.truetype("arial.ttf", 22)
+    except:
+        fonte_titulo = ImageFont.load_default()
+        fonte_texto = ImageFont.load_default()
 
-    draw.text((180, 100), f"Nome: {dados['nome']}", font=fonte, fill="black")
-    draw.text((180, 140), f"Matrícula: {dados['matricula']}", font=fonte, fill="black")
-    draw.text((180, 180), f"Curso: {dados['curso']}", font=fonte, fill="black")
-    draw.text((180, 220), f"CPF: {dados['cpf']}", font=fonte, fill="black")
-    draw.text((180, 260), f"Nascimento: {dados['data_nascimento']}", font=fonte, fill="black")
-    draw.text((180, 300), f"Dias de Aula: {dados['dias_aula']}", font=fonte, fill="black")
-    draw.text((180, 340), f"Validade: {dados['validade']}", font=fonte, fill="black")
+    # Cabeçalho
+    draw.rectangle([0, 0, largura, 80], fill=(0, 102, 204))
+    draw.text((20, 20), carteirinha["cabecalho"], font=fonte_titulo, fill=(255, 255, 255))
 
-    # Foto do aluno
-    if dados.get("foto") and os.path.exists(dados["foto"]):
-        foto = Image.open(dados["foto"]).resize((130, 130))
-        imagem_fundo.paste(foto, (30, 100))
+    # Informações
+    draw.text((150, 100), f"Nome: {carteirinha['nome']}", font=fonte_texto, fill=(0, 0, 0))
+    draw.text((150, 130), f"Curso: {carteirinha['curso']}", font=fonte_texto, fill=(0, 0, 0))
+    draw.text((150, 160), f"Matrícula: {carteirinha['matricula']}", font=fonte_texto, fill=(0, 0, 0))
+    draw.text((150, 190), f"CPF: {carteirinha['cpf']}", font=fonte_texto, fill=(0, 0, 0))
+    draw.text((150, 220), f"Nascimento: {carteirinha['nascimento']}", font=fonte_texto, fill=(0, 0, 0))
+    draw.text((150, 250), f"Dias de Aula: {carteirinha['dias_aula']}", font=fonte_texto, fill=(0, 0, 0))
+    draw.text((150, 280), f"Validade: {carteirinha['validade']}", font=fonte_texto, fill=(255, 0, 0))
 
     # Assinatura
-    if dados.get("assinatura") and os.path.exists(dados["assinatura"]):
-        assinatura = Image.open(dados["assinatura"]).resize((120, 60))
-        imagem_fundo.paste(assinatura, (180, 420))
+    if carteirinha.get("assinatura"):
+        assinatura = Image.open(carteirinha["assinatura"]).resize((120, 50))
+        imagem.paste(assinatura, (150, 320))
+    draw.text((150, 380), f"{carteirinha['secretario']}", font=fonte_texto, fill=(0, 0, 0))
+
+    # Foto
+    if carteirinha.get("foto"):
+        foto = Image.open(carteirinha["foto"]).resize((120, 140))
+        imagem.paste(foto, (20, 100))
 
     # Logos
-    if dados.get("logo_prefeitura") and os.path.exists(dados["logo_prefeitura"]):
-        logo1 = Image.open(dados["logo_prefeitura"]).resize((80, 80))
-        imagem_fundo.paste(logo1, (600, 30))
-    if dados.get("logo_secretaria") and os.path.exists(dados["logo_secretaria"]):
-        logo2 = Image.open(dados["logo_secretaria"]).resize((80, 80))
-        imagem_fundo.paste(logo2, (700, 30))
+    if carteirinha.get("logo_prefeitura"):
+        prefeitura = Image.open(carteirinha["logo_prefeitura"]).resize((100, 60))
+        imagem.paste(prefeitura, (650, 20))
+    if carteirinha.get("logo_secretaria"):
+        secretaria = Image.open(carteirinha["logo_secretaria"]).resize((100, 60))
+        imagem.paste(secretaria, (530, 20))
 
-    caminho_imagem = os.path.join(caminho_saida, f"{dados['matricula']}.png")
-    imagem_fundo.save(caminho_imagem)
-    return caminho_imagem
+    # QR Code
+    dados_qr = f"Nome: {carteirinha['nome']}\nCurso: {carteirinha['curso']}\nValidade: {carteirinha['validade']}"
+    qr = qrcode.make(dados_qr)
+    qr = qr.resize((120, 120))
+    imagem.paste(qr, (650, 350))
+
+    nome_arquivo = f"carteirinha_{carteirinha['matricula']}.png"
+    caminho_arquivo = os.path.join(diretorio_saida, nome_arquivo)
+    imagem.save(caminho_arquivo)
+
+    return caminho_arquivo
