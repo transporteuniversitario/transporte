@@ -3,6 +3,12 @@ import json
 import os
 from utils.auth import is_admin_logged_in, logout, load_usuarios, save_usuarios
 
+
+def get_user_data():
+    with open("base_de_dados.json", "r", encoding="utf-8") as f:
+        return json.load(f)
+
+
 def aprovar_usuario(email):
     usuarios = load_usuarios()
     for usuario in usuarios:
