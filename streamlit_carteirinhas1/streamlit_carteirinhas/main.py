@@ -1,10 +1,8 @@
 import streamlit as st 
 from aluno import tela_aluno
 from admin import tela_admin
-from utils.aluno import tela_aluno
-from utils.admin import tela_admin
+from aluno import tela_aluno
 from autenticar import autenticar_usuario
-
 
 # Inicializa a sessão
 if 'usuario' not in st.session_state:
