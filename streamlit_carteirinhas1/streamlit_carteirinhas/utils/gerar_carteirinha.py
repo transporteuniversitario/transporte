@@ -4,7 +4,6 @@ from PIL import Image, ImageDraw, ImageFont
 import qrcode
 from io import BytesIO
 
-
 # Função para gerar imagem da carteirinha com layout personalizado
 def gerar_carteirinha(carteirinha, diretorio_saida='carteirinhas_geradas'):
     if not os.path.exists(diretorio_saida):
