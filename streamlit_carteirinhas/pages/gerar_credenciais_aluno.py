@@ -1,14 +1,18 @@
 import streamlit as st
 import json
 import os
-from utils.auth import gerar_credenciais_aluno
+from utils.auth import gerar_credenciais_aluno  # Certifique-se de que este caminho está correto
 
-# Carregar base de dados de alunos
+# Caminho para o arquivo de alunos
 ALUNOS_DB = "data/alunos.json"
+
+# Cria o arquivo se não existir
 if not os.path.exists(ALUNOS_DB):
+    os.makedirs(os.path.dirname(ALUNOS_DB), exist_ok=True)
     with open(ALUNOS_DB, "w") as f:
         json.dump([], f)
 
+# Função para salvar aluno
 def salvar_aluno(aluno):
     with open(ALUNOS_DB, "r") as f:
         dados = json.load(f)
@@ -31,6 +35,7 @@ with st.form("form_cadastro"):
 if enviar:
     if nome and matricula and curso:
         usuario, senha = gerar_credenciais_aluno(nome)
+
         aluno = {
             "nome": nome,
             "usuario": usuario,
@@ -45,11 +50,13 @@ if enviar:
         }
 
         if foto:
+            os.makedirs("static/fotos", exist_ok=True)
             with open(f"static/fotos/{foto.name}", "wb") as f:
                 f.write(foto.getbuffer())
 
         salvar_aluno(aluno)
-        st.success("Cadastro enviado! Aguarde aprovação do administrador.")
+        st.success("Cadastro enviado com sucesso! Aguarde aprovação do administrador.")
         st.info(f"Usuário gerado: `{usuario}`\nSenha: `{senha}`")
     else:
         st.warning("Preencha os campos obrigatórios.")
+
