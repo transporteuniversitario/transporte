@@ -3,6 +3,7 @@ import os
 from utils.auth import get_user_data, logout
 from utils.gerar_carteirinha import gerar_carteirinha
 from PIL import Image
+from utils.usuarios import get_user_data
 
 user_data = get_user_data()
 if not user_data:
