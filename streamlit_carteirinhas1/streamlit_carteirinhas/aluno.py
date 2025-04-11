@@ -1,10 +1,14 @@
 import streamlit as st
-import json
 import os
+import json
 from utils.auth import gerar_credenciais_aluno
 
-# Carregar base de dados de alunos
-ALUNOS_DB = "data/alunos.json"
+ALUNOS_DB = "dados/alunos.json"  # ou "data/alunos.json"
+
+# Garante que a pasta existe
+os.makedirs(os.path.dirname(ALUNOS_DB), exist_ok=True)
+
+# Se o arquivo não existir, crie um vazio
 if not os.path.exists(ALUNOS_DB):
     with open(ALUNOS_DB, "w") as f:
         json.dump([], f)
