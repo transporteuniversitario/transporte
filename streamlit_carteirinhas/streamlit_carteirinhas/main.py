@@ -1,7 +1,8 @@
 import streamlit as st
 from utils.autenticar import autenticar_usuario
-from aluno import tela_aluno
-from admin import tela_admin
+from utils.auth import autenticar_usuario
+from pages.2_Gerar_Carteirinha import tela_aluno
+from pages.3_Gerenciar_Usuarios import tela_admin
 
 # Inicializa a sessão
 if 'usuario' not in st.session_state:
