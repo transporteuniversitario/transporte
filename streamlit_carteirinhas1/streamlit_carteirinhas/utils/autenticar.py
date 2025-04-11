@@ -15,12 +15,14 @@ def salvar_usuarios(df):
 def hash_senha(senha):
     return hashlib.sha256(senha.encode()).hexdigest()
 
-def autenticar(email, senha):
-    usuarios = carregar_usuarios()
-    senha_hash = hash_senha(senha)
-    user = usuarios[(usuarios["email"] == email) & (usuarios["senha"] == senha_hash)]
-    if not user.empty:
-        return user.iloc[0].to_dict()
+import json
+
+def autenticar_usuario(usuario, senha):
+    with open("base_de_dados.json", "r", encoding="utf-8") as f:
+        dados = json.load(f)
+        for user in dados["usuarios"]:
+            if user["usuario"] == usuario and user["senha"] == senha:
+                return user["tipo"]
     return None
 
 def cadastrar_usuario(nome, email, senha, tipo="aluno"):
