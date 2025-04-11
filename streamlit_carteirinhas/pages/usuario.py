@@ -5,7 +5,7 @@ from utils.auth import is_admin_logged_in, logout, load_usuarios, save_usuarios
 
 
 def get_user_data():
-    with open("base_de_dados.json", "r", encoding="utf-8") as f:
+    with open("base_de_dados.json", "r") as f:
         return json.load(f)
 
 
