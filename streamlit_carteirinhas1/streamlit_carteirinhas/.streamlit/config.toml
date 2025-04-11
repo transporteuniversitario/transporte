@@ -11,7 +11,4 @@ textColor="#262730"
 font="sans serif"
 
 [general]
-# Corrigir aqui:
-# defaultPage = "main.py" ❌ ERRADO
-# Use:
 defaultPage = "app.py"  ✅ CERTO
