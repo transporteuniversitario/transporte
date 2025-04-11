@@ -1,5 +1,4 @@
 import streamlit as st
-from utils.autenticar import autenticar_usuario
 from utils.auth import autenticar_usuario
 from pages.aluno import tela_aluno
 from pages.gerenciar_admin  import tela_admin
