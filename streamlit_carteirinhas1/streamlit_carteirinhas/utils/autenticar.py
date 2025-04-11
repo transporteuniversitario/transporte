@@ -1,6 +1,5 @@
 # autenticar.py
-import autenticar_usuario
-from utils.autenticar
+from utils.autenticar import autenticar_usuario
 import pandas as pd
 import hashlib
 
