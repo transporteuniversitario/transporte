@@ -1,5 +1,5 @@
 import streamlit as st
-from autenticar import autenticar_usuario
+from utils.autenticar import autenticar_usuario
 from aluno import tela_aluno
 from admin import tela_admin
 
