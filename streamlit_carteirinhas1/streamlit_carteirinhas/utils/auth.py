@@ -5,6 +5,10 @@ import os
 
 CAMINHO_BANCO = "base_de_dados.json"
 
+def autenticar_admin(usuario, senha):
+    # Exemplo simples (substituir pela lógica real)
+    return usuario == "admin@belmonte" and senha == "admin123"
+
 def gerar_credenciais_aluno(nome_completo):
     nome_usuario = nome_completo.lower().replace(" ", "") + "@belmonte"
     senha = nome_completo.strip().split()[0].lower() + "123456"
