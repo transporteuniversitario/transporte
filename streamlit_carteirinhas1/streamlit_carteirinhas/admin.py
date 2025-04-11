@@ -1,6 +1,7 @@
-import streamlit as st
-import json
+import sys
 import os
+sys.path.append(os.path.abspath(os.path.dirname(__file__)))import streamlit as st
+import json
 from utils.auth import autenticar_admin
 from utils.gerar_carteirinha import gerar_imagem_carteirinha
 from datetime import datetime
