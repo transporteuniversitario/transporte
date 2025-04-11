@@ -4,12 +4,14 @@ port = 8501
 enableCORS = false
 
 [theme]
-base = "light"
-primaryColor = "#004080"
-backgroundColor = "#f0f2f6"
-secondaryBackgroundColor = "#ffffff"
-textColor = "#000000"
-font = "sans serif"
+primaryColor="#F63366"
+backgroundColor="#FFFFFF"
+secondaryBackgroundColor="#F0F2F6"
+textColor="#262730"
+font="sans serif"
 
-[browser]
-gatherUsageStats = false
+[general]
+# Corrigir aqui:
+# defaultPage = "main.py" ❌ ERRADO
+# Use:
+defaultPage = "app.py"  ✅ CERTO
