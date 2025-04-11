@@ -1,7 +1,9 @@
 import streamlit as st
+from utils.autenticar import autenticar_usuario
 from admin import tela_admin
 from aluno import tela_aluno
-from autenticar import autenticar_usuario
+from utils.gerar_carteirinha import gerar_imagem_carteirinha
+
 
 # Inicializa a sessão
 if 'usuario' not in st.session_state:
